@@ -1,0 +1,20 @@
+import requests
+from bs4 import BeautifulSoup
+import csv
+
+url = "https://zh.wikipedia.org/wiki/2019%E5%86%A0%E7%8A%B6%E7%97%85%E6%AF%92%E7%97%85"
+csvfile = "aaa.csv"
+
+r=requests.get(url)
+r.encoding = "utf8"
+soup = BeautifulSoup(r.text, "lxml")
+tag_table = soup.find(class_="wikitable")
+rows = tag_table.findAll("tr")
+
+with open(csvfile, 'w+', newline='', encoding="utf8") as fp:
+    writer = csv.writer(fp)
+    for row in rows:
+        rowList = []
+        for cell in row.findAll(["td", "th"]):
+            rowList.append(cell.get_text().replace("\n","").replace("\r",""))
+        writer.writerow(rowList)
