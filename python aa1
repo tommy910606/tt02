@@ -1,0 +1,12 @@
+import requests
+from bs4 import BeautifulSoup
+
+r=requests.get("https://dweb.cjcu.edu.tw/freshman")
+r.encoding = "utf8"
+soup = BeautifulSoup(r.text, "lxml")
+
+tag_div = soup.find(id="oe_menu")
+tag_a = tag_div.find_all("a")
+
+for tag in tag_a:
+    print(tag.text)
