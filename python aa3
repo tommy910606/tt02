@@ -1,0 +1,26 @@
+import requests
+from bs4 import BeautifulSoup
+
+def save2file(aurl, aname) :
+    jpg = requests.get(aurl)
+    f = open(aname + '.jpg', 'wb')
+    f.write(jpg.content)
+    f.close()
+
+r = requests.get("https://www.cjcu.edu.tw/tw/")
+r.encoding = "utf8"
+sc = r.text
+
+if (r.status_code == 200) :
+    soup = BeautifulSoup(r.text, "lxml")
+    imgs = soup("img")
+
+    anum = 1
+    for aitem in imgs :
+        asrc = aitem.get("src")
+        if asrc and ("https" in asrc) :
+            print(asrc, "qq"+str(anum))
+            save2file(asrc, "qq"+str(anum))
+            anum += 1
+else :
+    print("error")
