@@ -1,0 +1,51 @@
+
+astr = "ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ"
+dict1 = {}
+for achar in astr :
+    dict1[achar] = 0
+
+# print(dict1)
+
+
+dict2 = {}
+inf = open("單字詞_13053(注音_無聲調).dic", "r", encoding="utf-8")
+aline = inf.readline()
+while aline :
+    aline = aline.strip()
+    alist = aline.split(",")
+    # print(alist)
+    if len(alist) >= 2 :
+        dict2[alist[0]] = alist[1]
+    aline = inf.readline()
+inf.close()
+# print(dict2)
+
+
+acnt = 0
+f = open('GigaWord_text_lm', 'r', encoding="utf-8")
+lines1 = f.readline()
+while lines1 :
+    lines1 = lines1.strip()
+    # print(lines1)
+    for achar in lines1 :
+        if achar != " " :
+            # print(achar, dict2[achar])
+            for bchar in dict2[achar] :
+                dict1[bchar] += 1
+    lines1 = f.readline()
+    # acnt += 1
+    # if acnt > 10 :
+    #     break
+
+f.close()
+
+print(dict1)
+
+total1 = 0
+for akey in dict1 :
+    total1 += dict1[akey]
+    
+print(total1)
+
+for akey in dict1 :
+    print("%s\t%d\t%.2f%%" % (akey, dict1[akey], (dict1[akey]/total1)*100))
